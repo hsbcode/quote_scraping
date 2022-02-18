@@ -48,6 +48,7 @@ while soup.find(class_="next"):
             new_list.append(author_initials)
             celebrity_dict[quote.find(class_ = "author").get_text()] = new_list
     counter += 1
+#Game Logic
 continues = False
 while not continues: 
     random_quote_celebrity_pair = choice(list(quote_celebrity_dict.items()))
