@@ -1,7 +1,9 @@
 #This program scrapes the web page "https://quotes.toscrape.com/" for quotes, and information about people to whom these quotes belong.
 # The program then asks the user to guess the person who has said the given quote. Users receive hints when they answer incorrectly.
+from random import choice
 import requests
 from bs4 import BeautifulSoup
+
 url = "https://quotes.toscrape.com"
 request = requests.get(url)
 soup = BeautifulSoup(request.text, "html.parser")
@@ -46,4 +48,34 @@ while soup.find(class_="next"):
             new_list.append(author_initials)
             celebrity_dict[quote.find(class_ = "author").get_text()] = new_list
     counter += 1
-print(celebrity_dict)
+continues = False
+while not continues: 
+    random_quote_celebrity_pair = choice(list(quote_celebrity_dict.items()))
+
+    print("Here is your quote: " + random_quote_celebrity_pair[0])
+    user_input = input("Can you guess who said it? Try 1/4: ")
+    if user_input == random_quote_celebrity_pair[1]:
+        print("Hurray, you guessed correctly!")
+    else:
+        print("Oops that was incorrect :(")
+        print(f"Hint 1/3 : The celebrity was born in {celebrity_dict[random_quote_celebrity_pair[1]][0]}.")
+        user_input = input("Can you guess who said it? Try 2/4: ")
+        if user_input == random_quote_celebrity_pair[1]:
+            print("Hurray, you guessed correctly!")
+        else:
+            print("Oops that was incorrect :(")
+            print(f"Hint 2/3 : The celebrity was born in {celebrity_dict[random_quote_celebrity_pair[1]][1]}.")
+            user_input = input("Can you guess who said it? Try 3/4: ")
+            if user_input == random_quote_celebrity_pair[1]:
+                print("Hurray, you guessed correctly!")
+            else:
+                print("Oops that was incorrect :(")
+                print(f"Hint 3/3 : The celebrity has the initials {celebrity_dict[random_quote_celebrity_pair[1]][2]}.")
+                user_input = input("Can you guess who said it? Try 4/4: ")
+                if user_input == random_quote_celebrity_pair[1]:
+                    print("Hurray, you guessed correctly!")
+                else:
+                    print(f"Sorry you lost! The correct answer was {random_quote_celebrity_pair[1]}.J")
+    replay_input = input("Do you want to play again y/n?").lower()
+    if replay_input == "n":
+        continues = True
